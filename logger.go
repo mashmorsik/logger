@@ -8,10 +8,15 @@ import (
 
 var Nlog *zerolog.Logger
 
-func BuildLogger() {
+func BuildLogger(customLogger *zerolog.Logger) {
+	if customLogger != nil {
+		Nlog = customLogger
+		return
+	}
+
 	logger := zerolog.New(
 		zerolog.ConsoleWriter{Out: os.Stderr, TimeFormat: time.RFC3339},
-	).Level(zerolog.TraceLevel).With().Timestamp().Caller().Logger()
+	).Level(zerolog.DebugLevel).With().Timestamp().Logger()
 
 	Nlog = &logger
 }
